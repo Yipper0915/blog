@@ -22,8 +22,6 @@ import {
   ChevronRight,
   ArrowRight
 } from 'lucide-react';
-import component1 from '../component1.png';
-import component2 from '../component2.png';
 import avatar1 from '../avatar1.jpg';
 import avatar2 from '../avatar2.jpg';
 import avatar3 from '../avatar3.jpg';
@@ -98,12 +96,12 @@ const Hero = () => {
           </div>
           
           <div className="flex flex-col gap-2">
-            <img src={component2} alt="需求池垂钓者 X 体验地图探险家" className="h-10 md:h-12 w-auto object-contain self-start" />
+            <img src="/component2.PNG" alt="需求池垂钓者 X 体验地图探险家" className="h-10 md:h-12 w-auto object-contain self-start" />
             <p className="text-lg text-black/40 max-w-lg leading-relaxed pt-2">
               致力于在复杂的需求中钓取核心价值，在用户体验的广袤地图中探索未知的惊喜。
             </p>
             <div className="pt-4">
-               <img src={component1} alt="Decoration" className="w-48 md:w-64 h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500" />
+              <img src="/component1.PNG" alt="Decoration" className="w-48 md:w-64 h-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-500" />
             </div>
           </div>
         </div>
