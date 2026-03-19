@@ -41,7 +41,7 @@ const Navbar = () => {
             <span className="cursor-pointer hover:opacity-100 transition-opacity" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>首页</span>
             <a href="#about" className="hover:opacity-100 transition-opacity">关于我</a>
             <a href="#notes" className="hover:opacity-100 transition-opacity">我的笔记</a>
-            <a href="#projects" className="hover:opacity-100 transition-opacity">我的作品</a>
+            {/* <a href="#projects" className="hover:opacity-100 transition-opacity">我的作品</a> */}
             <a href="#contact" className="hover:opacity-100 transition-opacity">联系我</a>
           </div>
         </div>
@@ -337,11 +337,11 @@ const About = () => {
           <motion.div whileHover={{ y: -5 }} className="col-span-2 glass p-8 rounded-[40px] flex items-center gap-8">
             <div className="flex-1 space-y-4">
               <span className="text-[10px] font-bold tracking-widest text-black/30 uppercase">电影推荐</span>
-              <h4 className="text-2xl font-bold">《星际穿越》</h4>
-              <p className="text-xs opacity-50 leading-relaxed">“爱是唯一可以超越时间与空间的事物。”</p>
+              <h4 className="text-2xl font-bold">《寻梦环游记》</h4>
+              <p className="text-xs opacity-50 leading-relaxed">“死亡不是终点，遗忘才是。”</p>
             </div>
             <div className="w-24 h-36 bg-black/5 rounded-xl shadow-2xl overflow-hidden rotate-6 hover:rotate-0 transition-transform">
-              <img src="https://picsum.photos/seed/interstellar/300/450" className="w-full h-full object-cover" />
+              <img src="/movie.jpg" className="w-full h-full object-cover" />
             </div>
           </motion.div>
 
@@ -537,7 +537,7 @@ const Notes = () => {
       </div>
       
       {/* Category Tabs */}
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide pl-2 pt-2">
         {categories.map(cat => (
           <button 
             key={cat}
@@ -594,7 +594,7 @@ const Home = () => {
         <Hero />
         <About />
         <Notes />
-        <Projects />
+        {/* <Projects /> */}
         <Contact />
       </main>
       

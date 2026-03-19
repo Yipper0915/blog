@@ -31,12 +31,52 @@ const notesConfig = [
 ];
 
 const NoteDetail = () => {
+    // 进入详情页自动滚动到顶部
+    useEffect(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, []);
+  // 音乐播放控制
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = React.useRef<HTMLAudioElement>(null);
+
+  const handleMusicToggle = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  // 自动同步播放状态（防止手动暂停后按钮状态不同步）
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const onEnded = () => setIsPlaying(false);
+    audio.addEventListener('ended', onEnded);
+    return () => audio.removeEventListener('ended', onEnded);
+  }, []);
   const { id } = useParams();
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   // 根据路由参数查找对应的文章元数据
   const noteMeta = notesConfig.find(n => n.id === Number(id));
+
+  // 根据笔记 id 选择音乐（必须在 noteMeta 定义后）
+  let musicSrc = "/music.mp3";
+  let musicName = "音乐";
+  if (noteMeta?.id === 1) {
+    musicSrc = "/Butterflies.aac";
+    musicName = "Butterflies";
+  }else if (noteMeta?.id === 2) {
+    musicSrc = "/赛博朋克2077.aac";
+    musicName = "赛博朋克2077";
+  } else if (noteMeta?.id === 3) {
+    musicSrc = "/雨爱.mp3";
+    musicName = "雨爱";
+  }
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -89,12 +129,16 @@ const NoteDetail = () => {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-3xl mx-auto space-y-8"
       >
-        <Link to="/" className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors group">
+        <button
+          type="button"
+          onClick={() => window.history.length > 1 ? window.history.back() : window.location.assign('/#notes')}
+          className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors group bg-transparent border-0 p-0 cursor-pointer"
+        >
           <div className="bg-white p-2 rounded-full shadow-sm group-hover:shadow-md transition-all">
-            <ArrowLeft size={20} /> 
+            <ArrowLeft size={20} />
           </div>
-          <span className="font-medium">返回首页</span>
-        </Link>
+          <span className="font-medium">返回我的笔记</span>
+        </button>
         
         <div className="space-y-6 text-center py-8">
           <div className="flex items-center justify-center gap-3 text-sm font-bold tracking-widest text-black/40 uppercase">
@@ -105,6 +149,28 @@ const NoteDetail = () => {
           <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight bg-gradient-to-br from-black to-black/60 bg-clip-text text-transparent">
             {noteMeta.title}
           </h1>
+          {/* 音乐播放按钮，标题下方右对齐 */}
+          <div className="flex flex-col items-end mt-2 pr-2 md:pr-8">
+            <button
+              onClick={handleMusicToggle}
+              className={`flex items-center gap-2 px-2 py-1 rounded-full font-semibold shadow transition-all mb-1 text-xs md:text-sm border ${isPlaying ? 'bg-purple-100 text-purple-500 border-purple-100' : 'bg-white text-gray-500 border-gray-200'} opacity-80 saturate-50`}
+              style={{minHeight:'28px'}}
+            >
+              本期音乐：<span className="font-semibold" style={{color: isPlaying ? '#a78bfa' : '#888'}}>{musicName}</span>
+              <svg width="16" height="16" fill="none" viewBox="0 0 20 20">
+                {isPlaying ? (
+                  <>
+                    <rect x="4" y="4" width="4" height="12" rx="1" fill="currentColor" />
+                    <rect x="12" y="4" width="4" height="12" rx="1" fill="currentColor" />
+                  </>
+                ) : (
+                  <polygon points="4,3 18,10 4,17" fill="currentColor" />
+                )}
+              </svg>
+            </button>
+            <audio ref={audioRef} src={musicSrc} preload="auto" />
+            <span className="text-[10px] text-gray-400 mt-0.5">（建议搭配食用）</span>
+          </div>
         </div>
 
         <div className="glass p-8 md:p-16 rounded-[40px] shadow-xl shadow-purple-900/5 bg-white/80 backdrop-blur-sm">
